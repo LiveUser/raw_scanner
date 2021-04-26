@@ -16,6 +16,7 @@ Simplified flutter packages for scanning QR codes that I could find didn't work,
 
 ~~~dart
 import 'package:raw_scanner/raw_scanner.dart';
+import 'package:qr_code_scanner/qr_code_scanner.dart';//Importing the original library is important for using the BarcodeFormat enum which is a required parameter
 ~~~
 
 ## Use
