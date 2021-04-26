@@ -1,6 +1,6 @@
 name: raw_scanner
 description: A simplified barcode/QR scanner/generator.
-version: 1.0.0+1
+version: 1.0.0+2
 homepage: https://github.com/LiveUser/raw_scanner
 
 environment:
