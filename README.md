@@ -6,9 +6,9 @@ Hecho en Puerto Rico 🇵🇷 por Radamés J. Valentín Reyes
 
 ## What is this?
 
-A package to scan barcodes(QR codes and others) in a simplified manner. It's a wrapper around tools rather than a personal project coded from scratch.
+A package to scan barcodes(QR codes and others) in a simplified manner. It's a wrapper around libraries rather than a personal project coded from scratch.
 
-## Why did I make it?
+## Why did I make this?
 
 Simplified flutter packages for scanning QR codes that I could find didn't work, the others were too time consuming to get them  to work, so I took the best among them and tried to simplify it.
 
@@ -33,10 +33,10 @@ RawScanner.generateQrCode("A string for the QR here")
 
 
 
-The example below scans for the specified "typeOfCode" and returns it as a String. Take into account that the returned value may be null. 
+The example below scans for the specified "typeOfCode" and returns it as a String. Take into account that the returned value may be null. Remember that you have to make sure that you check that the returned value isn't null and may have to use the null check operator afterwards to prevent errors. [More about null safety  on this link][https://flutter.dev/docs/null-safety] 
 
 ~~~dart
-String scanResults = await RawScanner.scanCode(
+String? scanResults = await RawScanner.scanCode(
 	typeOfCode: BarcodeFormat.qrcode, 
 	context: context,
 	foregroundColor: Colors.red,
@@ -69,7 +69,7 @@ class Test extends StatefulWidget {
 }
 
 class _TestState extends State<Test> {
-  String scanResults = "";
+  String? scanResults = "";
 
   @override
   Widget build(BuildContext context) {
@@ -83,18 +83,23 @@ class _TestState extends State<Test> {
                 scanResults = await RawScanner.scanCode(
                   typeOfCode: BarcodeFormat.qrcode, 
                   context: context,
-                  foregroundColor: Colors.red,
+                  foregroundColor: Colors.black,
+                  backgroundColor: Colors.cyan,
                 );
                 print(scanResults);
-                setState(() {
-                  scanResults = scanResults;
-                });
+                if(scanResults != null){
+                  setState(() {
+                    scanResults = scanResults;
+                  });
+                }
               }, 
               child: Text(
                 "Scan",
               ),
             ),
-            RawScanner.generateQrCode(scanResults)
+            RawScanner.generateQrCode(
+              data: scanResults!,
+            ),
           ],
         ),
       ),

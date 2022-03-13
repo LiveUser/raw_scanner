@@ -19,7 +19,7 @@ class Test extends StatefulWidget {
 }
 
 class _TestState extends State<Test> {
-  String scanResults = "";
+  String? scanResults = "";
 
   @override
   Widget build(BuildContext context) {
@@ -33,18 +33,23 @@ class _TestState extends State<Test> {
                 scanResults = await RawScanner.scanCode(
                   typeOfCode: BarcodeFormat.qrcode, 
                   context: context,
-                  foregroundColor: Colors.red,
+                  foregroundColor: Colors.black,
+                  backgroundColor: Colors.cyan,
                 );
                 print(scanResults);
-                setState(() {
-                  scanResults = scanResults;
-                });
+                if(scanResults != null){
+                  setState(() {
+                    scanResults = scanResults;
+                  });
+                }
               }, 
               child: Text(
                 "Scan",
               ),
             ),
-            RawScanner.generateQrCode(scanResults),
+            RawScanner.generateQrCode(
+              data: scanResults!,
+            ),
           ],
         ),
       ),

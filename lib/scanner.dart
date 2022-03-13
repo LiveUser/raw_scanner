@@ -3,16 +3,16 @@ import 'package:flutter/material.dart';
 
 class Scanner extends StatefulWidget {
   @required final BarcodeFormat typeOfCode;
-  Widget title;
+  final Widget? title;
   final bool centerTitle;
   final Color foregroundColor;
   final Color backgroundColor;
   Scanner({
-    @required this.typeOfCode,
-    @required this.title,
-    @required this.centerTitle,
-    @required this.backgroundColor,
-    @required this.foregroundColor,
+    required this.typeOfCode,
+    required this.title,
+    required this.centerTitle,
+    required this.backgroundColor,
+    required this.foregroundColor,
   });
 
   @override
@@ -21,12 +21,12 @@ class Scanner extends StatefulWidget {
 
 class _ScannerState extends State<Scanner> {
   final GlobalKey qrKey = GlobalKey();
-  QRViewController controller;
+  QRViewController? controller;
 
   @override
   void dispose() {
     if(controller != null){
-      controller.dispose();
+      controller!.dispose();
     }
     super.dispose();
   }
@@ -40,60 +40,55 @@ class _ScannerState extends State<Scanner> {
       setState(() {
         
       });
-      controller.scannedDataStream.listen((result) {
+      controller!.scannedDataStream.listen((result) {
         //Return value if it is the in the format we want
         if(widget.typeOfCode == result.format){
-          controller.stopCamera();
+          controller!.stopCamera();
           Navigator.pop(context, result.code);
         }
       });
     };
 
-    return Theme(
-      data: Theme.of(context).copyWith(
-        primaryColor: widget.foregroundColor ?? Colors.black,
-        scaffoldBackgroundColor: widget.backgroundColor ?? Colors.white,
-        backgroundColor: widget.backgroundColor ?? Colors.white,
+    return Scaffold(
+      appBar: AppBar(
+        title: widget.title,
+        centerTitle: widget.centerTitle,
+        backgroundColor: widget.backgroundColor,
+        foregroundColor: widget.foregroundColor,
       ),
-      child: Scaffold(
-        appBar: AppBar(
-          title: widget.title,
-          centerTitle: widget.centerTitle,
-        ),
-        body: SafeArea(
-          child: OrientationBuilder(
-            builder: (context, orientation){
-              if(orientation == Orientation.portrait){
-                return Stack(
-                  children: [
-                    ScannerView(qrKey: qrKey, onCreated: _onCreated),
-                    //Controls
-                    ScannerControlls(
-                      controller: controller,
-                      orientation: orientation,
-                      foregroundColor: widget.foregroundColor,
-                      backgroundColor: widget.backgroundColor,
-                    ),
-                    Crosshair(),
-                  ],
-                );
-              }else{
-                return Stack(
-                  children: [
-                    ScannerView(qrKey: qrKey, onCreated: _onCreated),
-                    //Controls
-                    ScannerControlls(
-                      controller: controller,
-                      orientation: orientation,
-                      foregroundColor: widget.foregroundColor,
-                      backgroundColor: widget.backgroundColor,
-                    ),
-                    Crosshair(),
-                  ],
-                );
-              }
-            },
-          ),
+      body: SafeArea(
+        child: OrientationBuilder(
+          builder: (context, orientation){
+            if(orientation == Orientation.portrait){
+              return Stack(
+                children: [
+                  ScannerView(qrKey: qrKey, onCreated: _onCreated),
+                  //Controls
+                  ScannerControlls(
+                    controller: controller,
+                    orientation: orientation,
+                    foregroundColor: widget.foregroundColor,
+                    backgroundColor: widget.backgroundColor,
+                  ),
+                  Crosshair(),
+                ],
+              );
+            }else{
+              return Stack(
+                children: [
+                  ScannerView(qrKey: qrKey, onCreated: _onCreated),
+                  //Controls
+                  ScannerControlls(
+                    controller: controller,
+                    orientation: orientation,
+                    foregroundColor: widget.foregroundColor,
+                    backgroundColor: widget.backgroundColor,
+                  ),
+                  Crosshair(),
+                ],
+              );
+            }
+          },
         ),
       ),
     );
@@ -102,7 +97,7 @@ class _ScannerState extends State<Scanner> {
 
 class Crosshair extends StatelessWidget {
   const Crosshair({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -126,9 +121,9 @@ class Crosshair extends StatelessWidget {
 
 class ScannerView extends StatelessWidget {
   const ScannerView({
-    Key key,
-    @required this.qrKey,
-    @required Null Function(QRViewController myController) onCreated,
+    Key? key,
+    required this.qrKey,
+    required Null Function(QRViewController myController) onCreated,
   }) : _onCreated = onCreated, super(key: key);
 
   final GlobalKey<State<StatefulWidget>> qrKey;
@@ -144,16 +139,16 @@ class ScannerView extends StatelessWidget {
 }
 
 class ScannerControlls extends StatelessWidget {
-  final QRViewController controller;
+  final QRViewController? controller;
   final double cornersRadius = 34;
   final Orientation orientation;
   final Color foregroundColor;
   final Color backgroundColor;
   ScannerControlls({
-    @required this.controller,
-    @required this.orientation,
-    @required this.foregroundColor,
-    @required this.backgroundColor,
+    required this.controller,
+    required this.orientation,
+    required this.foregroundColor,
+    required this.backgroundColor,
   });
   @override
   Widget build(BuildContext context) {
@@ -173,7 +168,7 @@ class ScannerControlls extends StatelessWidget {
             children: [
               TextButton(
                 onPressed: (){
-                  controller.toggleFlash();
+                  controller!.toggleFlash();
                 }, 
                 child: Icon(
                   Icons.flash_on,
@@ -182,7 +177,7 @@ class ScannerControlls extends StatelessWidget {
               ),
               TextButton(
                 onPressed: (){
-                  controller.flipCamera();
+                  controller!.flipCamera();
                 }, 
                 child: Icon(
                   Icons.flip_camera_android,
@@ -208,7 +203,7 @@ class ScannerControlls extends StatelessWidget {
             children: [
               TextButton(
                 onPressed: (){
-                  controller.toggleFlash();
+                  controller!.toggleFlash();
                 }, 
                 child: Icon(
                   Icons.flash_on,
@@ -217,8 +212,8 @@ class ScannerControlls extends StatelessWidget {
               ),
               TextButton(
                 onPressed: (){
-                  controller.flipCamera();
-                }, 
+                  controller!.flipCamera();
+                },
                 child: Icon(
                   Icons.flip_camera_android,
                   color: foregroundColor,

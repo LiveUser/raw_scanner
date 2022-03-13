@@ -1,15 +1,15 @@
 name: raw_scanner
 description: A simplified barcode/QR scanner/generator.
-version: 1.0.0+2
+version: 1.0.3+3
 homepage: https://github.com/LiveUser/raw_scanner
 
 environment:
-  sdk: ">=2.7.0 <3.0.0"
+  sdk: '>=2.12.0 <3.0.0'
 
 dependencies:
   flutter:
     sdk: flutter
-  qr_code_scanner: ^0.4.0
+  qr_code_scanner: ^0.6.1
   qr_flutter: ^4.0.0
 
 dev_dependencies:
